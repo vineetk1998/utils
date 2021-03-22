@@ -61,3 +61,19 @@ def tryExceptDecorator(errorMsg=None, returnValue=None, stackTrace: bool = False
         return wrapper
 
     return intermediate
+
+
+def checkJsonSerializibility(x):
+    try:
+        json.dumps(x)
+        return True
+    except Exception:
+        return False
+
+
+def checkJsonSerializibilityForArgsKwargs(args, kwargs):
+    args = tuple(filter(checkJsonSerializibility, args))
+    kwargs = {k: v for k, v in kwargs.items() if checkJsonSerializibility(v)}
+    return args, kwargs
+
+
